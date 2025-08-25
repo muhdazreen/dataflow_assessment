@@ -26,34 +26,35 @@ class ProductPage extends StatelessWidget {
   }
 
   void _buyProduct(BuildContext context) {
-  final double finalPrice = discountedPrice;
+    final double finalPrice = discountedPrice;
 
-  if (CreditBalance.credit.value >= finalPrice) {
-    CreditBalance.credit.value -= finalPrice;
+    if (CreditBalance.credit.value >= finalPrice) {
+      CreditBalance.credit.value -= finalPrice;
 
-    Flushbar(
-      message: "You bought $title for RM ${finalPrice.toStringAsFixed(2)}",
-      backgroundColor: Colors.green,
-      duration: const Duration(seconds: 1),
-      flushbarPosition: FlushbarPosition.TOP,
-    ).show(context);
+      Flushbar(
+        message: "You bought $title for RM ${finalPrice.toStringAsFixed(2)}",
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 1),
+        flushbarPosition: FlushbarPosition.TOP,
+      ).show(context);
 
-    Future.delayed(const Duration(seconds: 1), () {
-      // ignore: use_build_context_synchronously
-      if (Navigator.of(context).canPop()) {
+      Future.delayed(const Duration(seconds: 1), () {
         // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
-      }
-    });
-  } else {
-    Flushbar(
-      message: "Not enough credit! Please top up.",
-      backgroundColor: Colors.red,
-      duration: const Duration(seconds: 2),
-      flushbarPosition: FlushbarPosition.TOP,
-    ).show(context);
+        if (Navigator.of(context).canPop()) {
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pop();
+        }
+      });
+    } else {
+      Flushbar(
+        message: "Not enough credit! Please top up.",
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 2),
+        flushbarPosition: FlushbarPosition.TOP,
+      ).show(context);
+    }
   }
-}
+  
   @override
   Widget build(BuildContext context) {
     final bool hasDiscount = discount > 0;
